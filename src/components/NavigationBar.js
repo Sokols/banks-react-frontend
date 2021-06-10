@@ -1,25 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { AiFillBank } from 'react-icons/ai';
+import { connect } from 'react-redux';
 
-const NavigationBar = () => {
-    const [user, setUser] = useState(null);
+import { logoutUser } from '../redux/actions/userActions';
 
-    useEffect(() => {
-        const foundUser = JSON.parse(localStorage.getItem('user'));
-        if (foundUser) {
-            setUser(foundUser)
-        }
-    }, [])
-
+const NavigationBar = ({ user, logoutUser }) => {
     const handleLogout = e => {
         e.preventDefault();
-        setUser(null);
-        localStorage.clear();
-        console.log("User: " + user)
+        logoutUser();
     }
 
     return (
@@ -43,4 +35,9 @@ const NavigationBar = () => {
     )
 };
 
-export default NavigationBar;
+const mapStateToProps = ({ users }) => {
+    const { user } = users;
+    return { user };
+}
+
+export default connect(mapStateToProps, { logoutUser })(NavigationBar);

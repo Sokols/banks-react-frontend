@@ -1,18 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux';
 
 import LoginForm from '../forms/LoginForm';
 
-const HomeScreen = () => {
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const foundUser = JSON.parse(localStorage.getItem('user'));
-        if (foundUser) {
-            setUser(foundUser)
-        }
-    }, [])
-
+const HomeScreen = ({ user }) => {
     return (
         <div className="App">
             {user ? (
@@ -26,4 +17,9 @@ const HomeScreen = () => {
     )
 }
 
-export default connect(null, null)(HomeScreen);
+const mapStateToProps = ({ users }) => {
+    const { user } = users;
+    return { user };
+}
+
+export default connect(mapStateToProps, null)(HomeScreen);
