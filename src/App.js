@@ -13,13 +13,11 @@ function App() {
   return (
     <Router>
       <NavigationBar />
-        <div className="App">
           <Switch>
             <Route path="/" exact component={HomeScreen} />
             <Route path="/register" exact component={RegisterForm} />
             <Route path="/login" exact component={LoginForm} />
           </Switch>
-        </div>
     </Router>
   );
 }

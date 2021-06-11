@@ -1,0 +1,26 @@
+.Screen {
+    height: 100vh;
+    background: #666;
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    padding: 16px;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.title h2 {
+    font-size: 36px;
+    transition: 0.4s;
+    text-align: center;
+}
+
+.title h2:hover {
+    transform: scale(1.5);
+}
+
+.title span {
+    color: #bbb;
+}

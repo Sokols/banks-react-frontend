@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import './Form.css';
 
+import { Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { registerUser, addErrorMessage, removeErrorMessage } from '../../redux/actions/userActions';
 import HomeScreen from '../screens/HomeScreen';
+import { useHistory } from 'react-router-dom';
 
 const RegisterForm = ({ user, errorMessage, registerUser, addErrorMessage, removeErrorMessage }) => {
     const [details, setDetails] = useState({ username: "", email: "", password: "", repeatPassword: "" });
+    const history = useHistory();
+
+    if (user) {
+        history.push("/");
+    }
 
     useEffect(() => {
         removeErrorMessage()
@@ -35,33 +42,39 @@ const RegisterForm = ({ user, errorMessage, registerUser, addErrorMessage, remov
     }
 
     return (
-        <div>
-            { !user ? <form onSubmit={submitHandler}>
-                <div className="form-inner">
-                    <h2>Register</h2>
-                    <div className="form-group">
-                        <label htmlFor="name">Name: </label>
-                        <input type="text" name="name" id="name" onChange={e => setDetails({ ...details, username: e.target.value })} value={details.username} />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="email">Email: </label>
-                        <input type="email" name="email" id="email" onChange={e => setDetails({ ...details, email: e.target.value })} value={details.email} />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password: </label>
-                        <input type="password" name="password" id="password" onChange={e => setDetails({ ...details, password: e.target.value })} value={details.password} />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="repeatPassword">Repeat password: </label>
-                        <input type="password" name="repeatPassword" id="repeatPassword" onChange={e => setDetails({ ...details, repeatPassword: e.target.value })} value={details.repeatPassword} />
-                    </div>
-                    <input type="submit" value="Apply" />
-                    <div className="form-error-message">
-                        <h3><div className="error">{errorMessage}</div></h3>
-                    </div>
+        <div className="App">
+            {!user ? <div>
+                <h2>Register</h2>
+                <Form onSubmit={submitHandler}>
+                    <Form.Group controlId="formBasicUsername">
+                        <Form.Label>E-mail</Form.Label>
+                        <Form.Control type="text" placeholder="Enter name" onChange={e => setDetails({ ...details, username: e.target.value })} value={details.username} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>E-mail</Form.Label>
+                        <Form.Control type="email" placeholder="Enter e-mail" onChange={e => setDetails({ ...details, email: e.target.value })} value={details.email} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type="password" placeholder="Password" onChange={e => setDetails({ ...details, password: e.target.value })} value={details.password} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicRepeatPassword">
+                        <Form.Label>Repeat password</Form.Label>
+                        <Form.Control type="password" placeholder="Repeat password" onChange={e => setDetails({ ...details, repeatPassword: e.target.value })} value={details.repeatPassword} />
+                    </Form.Group>
+                    <Button type="submit" variant="secondary" >
+                        Apply
+                    </Button>
+                </Form>
+                <div className="form-error-message">
+                    <h3><div className="error">{errorMessage}</div></h3>
                 </div>
-            </form>
-                : <HomeScreen />}
+            </div>
+                : <HomeScreen />
+            }
         </div>
     )
 }

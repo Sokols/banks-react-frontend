@@ -4,3 +4,8 @@ export const REGISTER_USER = "REGISTER_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const USER_ERROR_OCCURED = "USER_ERROR_OCCURED";
 export const USER_ERROR_REMOVED = "USER_ERROR_REMOVED";
+
+// BANK CONSTANTS
+export const GET_ALL_BANKS = "GET_ALL_BANKS";
+export const ADD_BANK = "ADD_BANK";
+export const DELETE_BANK = "DELETE_BANK";

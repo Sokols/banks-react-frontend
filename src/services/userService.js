@@ -2,7 +2,6 @@ import http from "../http-common";
 
 class UserDataService {
     loginUser(data) {
-        console.log(data)
         return http.post("/loginUser", data);
     }
 
