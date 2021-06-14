@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-
 import './HomeScreen.css';
-import LoginForm from '../forms/LoginForm';
-import { getAllBanks } from '../../redux/actions/bankActions';
-import { useHistory } from 'react-router-dom';
-import BanksList from '../BanksList';
 
-const HomeScreen = ({ user, getAllBanks }) => {
+import { connect } from 'react-redux';
+import { Container, Jumbotron, Col, Row } from 'react-bootstrap';
+
+import { getAllBanks } from '../../redux/actions/bankActions';
+import { getAllAccounts } from '../../redux/actions/accountActions';
+import { useHistory } from 'react-router-dom';
+import BanksList from '../bank/BanksList';
+import AccountTable from '../account/AccountTable';
+
+const HomeScreen = ({ user, getAllBanks, getAllAccounts }) => {
     const [banks, setBanks] = useState([]);
+    const [accounts, setAccounts] = useState([]);
     const history = useHistory();
 
     if (!user) {
@@ -19,20 +23,36 @@ const HomeScreen = ({ user, getAllBanks }) => {
         getAllBanks()
             .then(banks => setBanks(banks))
             .catch(error => console.log(error))
+
+        getAllAccounts()
+            .then(accounts => setAccounts(accounts))
+            .catch(error => console.log(error))
     }, [])
 
     return (
         <div className="Screen">
             {user ? (
                 <div>
-                    <div className="title">
-                        <h2>Welcome, <span>{user.username}</span>!</h2>
-                    </div>
-                    <BanksList banks={banks} />
-                </div>
-            ) : (
-                <LoginForm />
-            )}
+                    <Jumbotron fluid className="jumbotron">
+                        <Container className="title">
+                            <h2>Welcome, <span>{user.username}</span>!</h2>
+                            <p>
+                                Take a look at the accounts available!
+                            </p>
+                        </Container>
+                    </Jumbotron>
+                    <Container className="screenContainer">
+                        <Row>
+                            <Col className="listContainer">
+                                <BanksList banks={banks} />
+                            </Col>
+                            <Col>
+                                <AccountTable accounts={accounts} />
+                            </Col>
+                        </Row>
+                    </Container>
+                </div>) : (<div></div>)
+            }
         </div>
     )
 }
@@ -42,4 +62,4 @@ const mapStateToProps = ({ users }) => {
     return { user };
 }
 
-export default connect(mapStateToProps, { getAllBanks })(HomeScreen);
+export default connect(mapStateToProps, { getAllBanks, getAllAccounts })(HomeScreen);

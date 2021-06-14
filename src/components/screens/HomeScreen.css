@@ -1,8 +1,14 @@
 .Screen {
-    height: 100vh;
+    padding: 64px;
     background: #666;
-    display: flex;
-    justify-content: center;
+}
+
+.jumbotron {
+    color: #bbb;
+    text-align: center;
+    border-radius: 16px;
+    margin: 24px;
+    background: #555;
 }
 
 .title {
@@ -23,4 +29,15 @@
 
 .title span {
     color: #bbb;
+}
+
+.listContainer {
+    min-width: 200px;
+    max-width: 350px;
+    max-height: 350px; 
+    overflow: auto;
+}
+
+.screenContainer {
+    flex-direction: column;
 }

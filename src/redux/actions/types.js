@@ -9,3 +9,6 @@ export const USER_ERROR_REMOVED = "USER_ERROR_REMOVED";
 export const GET_ALL_BANKS = "GET_ALL_BANKS";
 export const ADD_BANK = "ADD_BANK";
 export const DELETE_BANK = "DELETE_BANK";
+
+// ACCOUNT CONSTANTS
+export const GET_ALL_ACCOUNTS = "GET_ALL_ACCOUNTS";

@@ -15,7 +15,7 @@ const NavigationBar = ({ user, logoutUser }) => {
     }
 
     return (
-        <Navbar bg="dark" variant="dark">
+        <Navbar fixed="top" bg="dark" variant="dark">
             <Link to={"/"} className="navbar-brand">
                 <AiFillBank size="32px" />
             </Link>

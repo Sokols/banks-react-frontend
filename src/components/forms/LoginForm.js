@@ -49,14 +49,14 @@ const LoginForm = ({ user, errorMessage, loginUser, addErrorMessage, removeError
                 <Form onSubmit={submitHandler}>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>E-mail</Form.Label>
-                        <Form.Control type="email" placeholder="Enter e-mail" onChange={e => setDetails({ ...details, email: e.target.value })} value={details.email} />
+                        <Form.Control type="email" onChange={e => setDetails({ ...details, email: e.target.value })} value={details.email} />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" onChange={e => setDetails({ ...details, password: e.target.value })} value={details.password} />
+                        <Form.Control type="password" onChange={e => setDetails({ ...details, password: e.target.value })} value={details.password} />
                     </Form.Group>
-                    <Button type="submit" variant="secondary" >
+                    <Button type="submit" className="btn btn-secondary mr-xl-5 w-100" >
                         Apply
                     </Button>
                 </Form>
