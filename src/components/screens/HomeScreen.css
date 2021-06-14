@@ -1,0 +1,43 @@
+.Screen {
+    padding: 64px;
+    background: #666;
+}
+
+.jumbotron {
+    color: #bbb;
+    text-align: center;
+    border-radius: 16px;
+    margin: 24px;
+    background: #555;
+}
+
+.title {
+    padding: 16px;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.title h2 {
+    font-size: 36px;
+    transition: 0.4s;
+    text-align: center;
+}
+
+.title h2:hover {
+    transform: scale(1.5);
+}
+
+.title span {
+    color: #bbb;
+}
+
+.listContainer {
+    min-width: 200px;
+    max-width: 350px;
+    max-height: 350px; 
+    overflow: auto;
+}
+
+.screenContainer {
+    flex-direction: column;
+}
