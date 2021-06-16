@@ -47,7 +47,7 @@ const RegisterForm = ({ user, errorMessage, registerUser, addErrorMessage, remov
                 <h2>Register</h2>
                 <Form onSubmit={submitHandler}>
                     <Form.Group controlId="formBasicUsername">
-                        <Form.Label>E-mail</Form.Label>
+                        <Form.Label>Username</Form.Label>
                         <Form.Control type="text" onChange={e => setDetails({ ...details, username: e.target.value })} value={details.username} />
                     </Form.Group>
 

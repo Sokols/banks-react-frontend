@@ -1,31 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './AccountTable.css';
 
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
+import AccountModal from './AccountModal';
 
-const AccountTable = ({ accounts }) => {
+const AccountTable = ({ accounts, addAccount }) => {
+    const [show, setShow] = useState(false);
+    const [account, setAccount] = useState({});
+
+    const editAccount = (account) => {
+        setAccount(account)
+        setShow(true);
+    }
+
+    const saveAccount = () => addAccount(account);
+
     return (
-        <Table striped bordered hover variant="dark" className="table" >
-            <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Account Number</th>
-                </tr>
-            </thead>
-            {
-                accounts ? (
-                    <tbody>
-                        {accounts.map(({ ownerName, ownerSurname, accountNumber }) => (
-                            <tr>
-                                <td>{ownerName}</td>
-                                <td>{ownerSurname}</td>
-                                <td>{accountNumber}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                )
-                    : (
+        <div>
+            <AccountModal show={show} setShow={setShow} account={account} setAccount={setAccount} saveAccount={saveAccount} />
+            <Table striped bordered hover variant="dark" className="table" >
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Account Number</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                {
+                    accounts ? (
+                        <tbody>
+                            {accounts.map((account) => (
+                                <tr>
+                                    <td>{account.ownerName}</td>
+                                    <td>{account.ownerSurname}</td>
+                                    <td>{account.accountNumber}</td>
+                                    <td>
+                                        <Button className="rowButton" variant="primary" onClick={() => editAccount(account)}>Edit</Button>
+                                        <Button className="rowButton" variant="danger">Delete</Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    ) : (
                         <tbody>
                             <tr>
                                 <td>Mark</td>
@@ -44,7 +61,8 @@ const AccountTable = ({ accounts }) => {
                             </tr>
                         </tbody>
                     )}
-        </Table>
+            </Table>
+        </div>
     )
 }
 

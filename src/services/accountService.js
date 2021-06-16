@@ -5,8 +5,12 @@ class AccountDataService {
         return http.get("/account");
     }
 
+    getAccountsByBankId(bankId) {
+        return http.get("/account/" + bankId)
+    }
+
     addAccount(data) {
-        return http.post("/account", data);
+        return http.put("/account", data);
     }
 }
 

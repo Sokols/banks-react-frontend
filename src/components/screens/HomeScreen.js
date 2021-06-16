@@ -4,13 +4,13 @@ import './HomeScreen.css';
 import { connect } from 'react-redux';
 import { Container, Jumbotron, Col, Row } from 'react-bootstrap';
 
-import { getAllBanks } from '../../redux/actions/bankActions';
-import { getAllAccounts } from '../../redux/actions/accountActions';
+import { getAllBanksByUserId } from '../../redux/actions/bankActions';
+import { getAccountsByBankId, addAccount } from '../../redux/actions/accountActions';
 import { useHistory } from 'react-router-dom';
 import BanksList from '../bank/BanksList';
 import AccountTable from '../account/AccountTable';
 
-const HomeScreen = ({ user, getAllBanks, getAllAccounts }) => {
+const HomeScreen = ({ user, getAllBanksByUserId, getAccountsByBankId, addAccount }) => {
     const [banks, setBanks] = useState([]);
     const [accounts, setAccounts] = useState([]);
     const history = useHistory();
@@ -20,14 +20,22 @@ const HomeScreen = ({ user, getAllBanks, getAllAccounts }) => {
     }
 
     useEffect(() => {
-        getAllBanks()
-            .then(banks => setBanks(banks))
-            .catch(error => console.log(error))
-
-        getAllAccounts()
-            .then(accounts => setAccounts(accounts))
+        getAllBanksByUserId(user.id)
+            .then(banks => {
+                setBanks(banks)
+                onBankClicked(banks[0])
+            })
             .catch(error => console.log(error))
     }, [])
+
+    const onBankClicked = (bank) => {
+        if (bank != null) {
+            console.log("Bank clicked: " + bank.bankName)
+            getAccountsByBankId(bank.id)
+                .then(accounts => setAccounts(accounts))
+                .catch(error => console.log(error))
+        }
+    }
 
     return (
         <div className="Screen">
@@ -44,10 +52,10 @@ const HomeScreen = ({ user, getAllBanks, getAllAccounts }) => {
                     <Container className="screenContainer">
                         <Row>
                             <Col className="listContainer">
-                                <BanksList banks={banks} />
+                                <BanksList banks={banks} onBankClicked={(bank) => onBankClicked(bank)} />
                             </Col>
                             <Col>
-                                <AccountTable accounts={accounts} />
+                                <AccountTable accounts={accounts} addAccount={(account) => addAccount(account)} />
                             </Col>
                         </Row>
                     </Container>
@@ -62,4 +70,4 @@ const mapStateToProps = ({ users }) => {
     return { user };
 }
 
-export default connect(mapStateToProps, { getAllBanks, getAllAccounts })(HomeScreen);
+export default connect(mapStateToProps, { getAllBanksByUserId, getAccountsByBankId, addAccount })(HomeScreen);
