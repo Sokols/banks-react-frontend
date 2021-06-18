@@ -8,7 +8,8 @@ import {
 
 const initialState = {
     errorMessage: '',
-    user: null
+    user: null,
+    authToken: ''
 };
 
 export default (state = initialState, action) => {
@@ -16,13 +17,13 @@ export default (state = initialState, action) => {
 
     switch (type) {
         case LOGIN_USER:
-            return { ...state, user: payload }
+            return { ...state, user: payload.user, authToken: payload.authToken }
 
         case REGISTER_USER:
-            return { ...state, user: payload }
+            return { ...state, user: payload.user, authToken: payload.authToken }
 
         case LOGOUT_USER:
-            return { ...state, user: null }
+            return { ...state, user: null, authToken: '' }
 
         case USER_ERROR_OCCURED:
             return { ...state, errorMessage: payload }

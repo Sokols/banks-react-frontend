@@ -6,17 +6,17 @@ import {
     USER_ERROR_REMOVED
 } from "./types";
 
+import { encode } from 'base-64';
+
 import UserDataService from "../../services/userService";
 
 export const loginUser = (user) => async (dispatch) => {
     try {
         const res = await UserDataService.loginUser(user);
-        console.log(res.data)
         dispatch({
             type: LOGIN_USER,
-            payload: res.data,
+            payload: { user: res.data, authToken: getAuthToken({ username: res.data.username, password: user.password }) },
         });
-        console.log("User logged in!");
         return Promise.resolve(res.data);
     } catch (err) {
         return Promise.reject(err);
@@ -28,26 +28,23 @@ export const registerUser = ({ email, username, password }) => async (dispatch) 
         const res = await UserDataService.registerUser({ email, username, password });
         dispatch({
             type: REGISTER_USER,
-            payload: res.data,
+            payload: { user: res.data, authToken: getAuthToken({ username, password }) },
         });
-        console.log("User registered!");
         return Promise.resolve(res.data);
     } catch (err) {
-        console.log(err);
         return Promise.reject(err);
     }
 };
 
 export const logoutUser = () => (dispatch) => {
-    console.log("User logged out!");
     dispatch({
         type: LOGOUT_USER
     });
 };
 
 export const removeErrorMessage = () => (dispatch) => {
-    dispatch({ 
-        type: USER_ERROR_REMOVED 
+    dispatch({
+        type: USER_ERROR_REMOVED
     });
 }
 
@@ -56,4 +53,8 @@ export const addErrorMessage = (message) => (dispatch) => {
         type: USER_ERROR_OCCURED,
         payload: message
     });
+}
+
+const getAuthToken = ({ username, password }) => {
+    return encode(username + ":" + password);
 }

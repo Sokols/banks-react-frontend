@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './HomeScreen.css';
 
 import { connect } from 'react-redux';
-import { Container, Jumbotron, Col, Row, Button } from 'react-bootstrap';
+import { Container, Col, Row, Button } from 'react-bootstrap';
 
 import { getAllBanks } from '../../redux/actions/bankActions';
 import { getAccountsByUserAndBankId, addAccount, editAccount, removeAccountById } from '../../redux/actions/accountActions';
@@ -12,7 +12,7 @@ import AccountTable from '../account/AccountTable';
 import AccountModal from '../account/AccountModal';
 import BankInfo from '../bank/BankInfo';
 
-const HomeScreen = ({ user, getAllBanks, getAccountsByUserAndBankId, addAccount, editAccount, removeAccountById }) => {
+const HomeScreen = ({ user, authToken, getAllBanks, getAccountsByUserAndBankId, addAccount, editAccount, removeAccountById }) => {
     const history = useHistory();
 
     const [banks, setBanks] = useState([]);
@@ -28,7 +28,7 @@ const HomeScreen = ({ user, getAllBanks, getAccountsByUserAndBankId, addAccount,
 
     useEffect(() => {
         if (user) {
-            getAllBanks()
+            getAllBanks(authToken)
                 .then(banks => {
                     setBanks(banks)
                     setAccount({ ...account, userId: user.id, bank: banks[0] })
@@ -39,8 +39,7 @@ const HomeScreen = ({ user, getAllBanks, getAccountsByUserAndBankId, addAccount,
     }, [])
 
     const saveAccount = () => {
-        console.log(account)
-        addAccount(account)
+        addAccount(authToken, account)
             .then(() => {
                 updateAccounts(account.bank);
                 setAccount({ ...account, accountNumber: "", ownerName: "", ownerSurname: "", bank: { bankName: "" } });
@@ -55,10 +54,9 @@ const HomeScreen = ({ user, getAllBanks, getAccountsByUserAndBankId, addAccount,
 
     const updateAccounts = (bank) => {
         if (bank && user) {
-            getAccountsByUserAndBankId(user.id, bank.id)
+            getAccountsByUserAndBankId(authToken, user, bank.id)
                 .then(accounts => {
                     setAccounts(accounts)
-                    console.log(accounts)
                 })
                 .catch(error => console.log(error))
             setCurrentBank(bank);
@@ -86,12 +84,12 @@ const HomeScreen = ({ user, getAllBanks, getAccountsByUserAndBankId, addAccount,
                                     banks={banks}
                                     accounts={accounts}
                                     editAccount={(account) => {
-                                        editAccount(account).then(() => {
+                                        editAccount(authToken, account).then(() => {
                                             updateAccounts(account.bank);
                                         })
                                     }}
                                     removeAccount={(account) => {
-                                        removeAccountById(account.id).then(() => {
+                                        removeAccountById(authToken, account.id).then(() => {
                                             updateAccounts(account.bank);
                                         })
                                     }}
@@ -110,8 +108,8 @@ const HomeScreen = ({ user, getAllBanks, getAccountsByUserAndBankId, addAccount,
 }
 
 const mapStateToProps = ({ users }) => {
-    const { user } = users;
-    return { user };
+    const { user, authToken } = users;
+    return { user, authToken };
 }
 
 export default connect(mapStateToProps, { getAllBanks, getAccountsByUserAndBankId, addAccount, editAccount, removeAccountById })(HomeScreen);

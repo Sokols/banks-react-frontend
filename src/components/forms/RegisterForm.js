@@ -28,13 +28,16 @@ const RegisterForm = ({ user, errorMessage, registerUser, addErrorMessage, remov
 
                     }
                 })
-                .catch(error => console.log(error))
+                .catch(error => addErrorMessage(error.response.data.details))
         }
     }
 
     const ifDetailsValidate = ({ username, email, password, repeatPassword }) => {
         if (username === "" || email === "" || password === "" || repeatPassword === "") {
-            addErrorMessage("Complete all fields!")
+            addErrorMessage("Complete all fields!");
+            return false;
+        } else if (password !== repeatPassword) {
+            addErrorMessage("Passwords doesn't match!");
             return false;
         }
         removeErrorMessage();

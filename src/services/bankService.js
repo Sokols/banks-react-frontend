@@ -1,16 +1,8 @@
 import http from "../http-common";
 
 class BankDataService {
-    getAllBanks() {
-        return http.get("/bank");
-    }
-
-    addBank(data) {
-        return http.post("/bank", data);
-    }
-
-    deleteBank(data) {
-        return http.delete("/bank", data);
+    getAllBanks(authToken) {
+        return http.get("/bank", { headers: { "Authorization" : `Basic ${authToken}`} });
     }
 }
 

@@ -29,7 +29,7 @@ const LoginForm = ({ user, errorMessage, loginUser, addErrorMessage, removeError
                             
                     }
                 })
-                .catch(error => console.log(error))
+                .catch(error => addErrorMessage(error.response.data.details))
         }
     }
 
