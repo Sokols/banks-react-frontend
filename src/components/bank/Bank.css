@@ -1,0 +1,22 @@
+.bankInfoContainer {
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    background: #555;
+    border-radius: 16px;
+}
+
+.bankInfoContainer p {
+    margin: 16px;
+    font-size: 18px;
+    color: #eee;
+}
+
+.bankInfoContainer p span {
+    color: #bbb;
+}
+
+.bankInfoImage {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}

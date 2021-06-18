@@ -1,8 +1,8 @@
 import http from "../http-common";
 
 class BankDataService {
-    getAllBanksByUserId(userId) {
-        return http.get("/bank/" + userId);
+    getAllBanks() {
+        return http.get("/bank");
     }
 
     addBank(data) {

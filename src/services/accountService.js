@@ -1,16 +1,20 @@
 import http from "../http-common";
 
 class AccountDataService {
-    getAllAccounts() {
-        return http.get("/account");
-    }
-
-    getAccountsByBankId(bankId) {
-        return http.get("/account/" + bankId)
+    getAccountsByUserAndBankId(userId, bankId) {
+        return http.get("/account/" + userId + "/" + bankId)
     }
 
     addAccount(data) {
+        return http.post("/account", data)
+    }
+
+    editAccount(data) {
         return http.put("/account", data);
+    }
+
+    removeAccountById(id) {
+        return http.delete("/account/" + id);
     }
 }
 

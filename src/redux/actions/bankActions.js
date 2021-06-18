@@ -1,9 +1,8 @@
 import BankDataService from "../../services/bankService";
 
-export const getAllBanksByUserId = (userId) => async (dispatch) => {
+export const getAllBanks = () => async (dispatch) => {
     try {
-        const res = await BankDataService.getAllBanksByUserId(userId);
-        console.log("Banks: " + res.data[0])
+        const res = await BankDataService.getAllBanks();
         return Promise.resolve(res.data);
     } catch (err) {
         return Promise.reject(err);

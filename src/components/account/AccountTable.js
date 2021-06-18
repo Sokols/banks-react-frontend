@@ -4,20 +4,20 @@ import './AccountTable.css';
 import { Table, Button } from 'react-bootstrap';
 import AccountModal from './AccountModal';
 
-const AccountTable = ({ accounts, addAccount }) => {
+const AccountTable = ({ user, banks, accounts, editAccount, removeAccount }) => {
     const [show, setShow] = useState(false);
-    const [account, setAccount] = useState({});
+    const [account, setAccount] = useState({ accountNumber: "", ownerName: "", ownerSurname: "", bank: { bankName: "" }, userId: user.id });
 
-    const editAccount = (account) => {
+    const editChosenAccount = (account) => {
         setAccount(account)
         setShow(true);
     }
 
-    const saveAccount = () => addAccount(account);
+    const saveAccount = () => editAccount(account);
 
     return (
         <div>
-            <AccountModal show={show} setShow={setShow} account={account} setAccount={setAccount} saveAccount={saveAccount} />
+            <AccountModal banks={banks} show={show} setShow={setShow} account={account} setAccount={setAccount} saveAccount={saveAccount} />
             <Table striped bordered hover variant="dark" className="table" >
                 <thead>
                     <tr>
@@ -28,7 +28,7 @@ const AccountTable = ({ accounts, addAccount }) => {
                     </tr>
                 </thead>
                 {
-                    accounts ? (
+                    accounts && accounts[0] ? (
                         <tbody>
                             {accounts.map((account) => (
                                 <tr>
@@ -36,8 +36,14 @@ const AccountTable = ({ accounts, addAccount }) => {
                                     <td>{account.ownerSurname}</td>
                                     <td>{account.accountNumber}</td>
                                     <td>
-                                        <Button className="rowButton" variant="primary" onClick={() => editAccount(account)}>Edit</Button>
-                                        <Button className="rowButton" variant="danger">Delete</Button>
+                                        <Button 
+                                            className="rowButton" 
+                                            variant="primary" 
+                                            onClick={() => editChosenAccount(account)}>Edit</Button>
+                                        <Button 
+                                            className="rowButton" 
+                                            variant="danger"
+                                            onClick={() => removeAccount(account)}>Delete</Button>
                                     </td>
                                 </tr>
                             ))}
@@ -45,19 +51,7 @@ const AccountTable = ({ accounts, addAccount }) => {
                     ) : (
                         <tbody>
                             <tr>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>1234</td>
-                            </tr>
-                            <tr>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>5678</td>
-                            </tr>
-                            <tr>
-                                <td>Larry the Bird</td>
-                                <td></td>
-                                <td>9012</td>
+                                <td colSpan="4">No account yet!</td>
                             </tr>
                         </tbody>
                     )}
