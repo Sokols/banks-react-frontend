@@ -1,12 +1,20 @@
 import http from "../http-common";
 
 class AccountDataService {
-    getAllAccounts() {
-        return http.get("/account");
+    getAccountsByUserAndBankId(authToken, user, bankId) {
+        return http.get("/account/" + user.id + "/" + bankId, { headers: { "Authorization" : `Basic ${authToken}`} })
     }
 
-    addAccount(data) {
-        return http.post("/account", data);
+    addAccount(authToken, data) {
+        return http.post("/account", data, { headers: { "Authorization" : `Basic ${authToken}`} })
+    }
+
+    editAccount(authToken, data) {
+        return http.put("/account", data, { headers: { "Authorization" : `Basic ${authToken}`} });
+    }
+
+    removeAccountById(authToken, accountId) {
+        return http.delete("/account/" + accountId, { headers: { "Authorization" : `Basic ${authToken}`} });
     }
 }
 

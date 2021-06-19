@@ -1,50 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './AccountTable.css';
 
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
+import AccountModal from './AccountModal';
 
-const AccountTable = ({ accounts }) => {
+const AccountTable = ({ user, banks, accounts, editAccount, removeAccount }) => {
+    const [show, setShow] = useState(false);
+    const [account, setAccount] = useState({ accountNumber: "", ownerName: "", ownerSurname: "", bank: { bankName: "" }, userId: user.id });
+
+    const editChosenAccount = (account) => {
+        setAccount(account)
+        setShow(true);
+    }
+
+    const saveAccount = () => editAccount(account);
+
     return (
-        <Table striped bordered hover variant="dark" className="table" >
-            <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Account Number</th>
-                </tr>
-            </thead>
-            {
-                accounts ? (
-                    <tbody>
-                        {accounts.map(({ ownerName, ownerSurname, accountNumber }) => (
-                            <tr>
-                                <td>{ownerName}</td>
-                                <td>{ownerSurname}</td>
-                                <td>{accountNumber}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                )
-                    : (
+        <div>
+            <AccountModal banks={banks} show={show} setShow={setShow} account={account} setAccount={setAccount} saveAccount={saveAccount} />
+            <Table striped bordered hover variant="dark" className="table" >
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Account Number</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                {
+                    accounts && accounts[0] ? (
+                        <tbody>
+                            {accounts.map((account) => (
+                                <tr>
+                                    <td>{account.ownerName}</td>
+                                    <td>{account.ownerSurname}</td>
+                                    <td>{account.accountNumber}</td>
+                                    <td>
+                                        <Button 
+                                            className="rowButton" 
+                                            variant="primary" 
+                                            onClick={() => editChosenAccount(account)}>Edit</Button>
+                                        <Button 
+                                            className="rowButton" 
+                                            variant="danger"
+                                            onClick={() => removeAccount(account)}>Delete</Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    ) : (
                         <tbody>
                             <tr>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>1234</td>
-                            </tr>
-                            <tr>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>5678</td>
-                            </tr>
-                            <tr>
-                                <td>Larry the Bird</td>
-                                <td></td>
-                                <td>9012</td>
+                                <td colSpan="4">No account yet!</td>
                             </tr>
                         </tbody>
                     )}
-        </Table>
+            </Table>
+        </div>
     )
 }
 

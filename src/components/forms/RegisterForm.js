@@ -28,13 +28,16 @@ const RegisterForm = ({ user, errorMessage, registerUser, addErrorMessage, remov
 
                     }
                 })
-                .catch(error => console.log(error))
+                .catch(error => addErrorMessage(error.response.data.details))
         }
     }
 
     const ifDetailsValidate = ({ username, email, password, repeatPassword }) => {
         if (username === "" || email === "" || password === "" || repeatPassword === "") {
-            addErrorMessage("Complete all fields!")
+            addErrorMessage("Complete all fields!");
+            return false;
+        } else if (password !== repeatPassword) {
+            addErrorMessage("Passwords doesn't match!");
             return false;
         }
         removeErrorMessage();
@@ -47,7 +50,7 @@ const RegisterForm = ({ user, errorMessage, registerUser, addErrorMessage, remov
                 <h2>Register</h2>
                 <Form onSubmit={submitHandler}>
                     <Form.Group controlId="formBasicUsername">
-                        <Form.Label>E-mail</Form.Label>
+                        <Form.Label>Username</Form.Label>
                         <Form.Control type="text" onChange={e => setDetails({ ...details, username: e.target.value })} value={details.username} />
                     </Form.Group>
 
