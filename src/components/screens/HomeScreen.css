@@ -1,5 +1,4 @@
 .Screen {
-    height: 100vh;
     padding: 64px;
     background: #666;
 }
@@ -40,11 +39,6 @@
 
 .tableContainer {
     margin-top: 36px;
-}
-
-.bankList {
-    max-height: 350px; 
-    overflow: auto;
 }
 
 .screenContainer {

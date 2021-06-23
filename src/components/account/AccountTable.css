@@ -1,3 +1,20 @@
 .rowButton {
     margin: 5px;
 }
+
+.toCopy {
+    cursor: pointer;
+}
+
+.toCopy:hover {
+    transform: scale(1.05);
+    transition-duration: 0.3s;
+}
+
+.toCopy:active {
+    opacity: 0.5;
+}
+
+.data-error {
+    color: red;
+}

@@ -34,7 +34,7 @@ const AccountTable = ({ user, banks, accounts, editAccount, removeAccount }) => 
                                 <tr>
                                     <td>{account.ownerName}</td>
                                     <td>{account.ownerSurname}</td>
-                                    <td>{account.accountNumber}</td>
+                                    <td className="toCopy" onClick={() => {navigator.clipboard.writeText(account.accountNumber)}}>{account.accountNumber}</td>
                                     <td>
                                         <Button 
                                             className="rowButton" 

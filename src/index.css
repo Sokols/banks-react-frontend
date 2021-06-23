@@ -13,3 +13,11 @@
     justify-content: center;
     background: #666;
 }
+
+.navbar-user {
+    font-size: 16px;
+}
+
+.navbar-user span {
+    color: #bbb;
+}

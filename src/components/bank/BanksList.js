@@ -6,7 +6,7 @@ import { ListGroup } from 'react-bootstrap';
 const BanksList = ({ onBankClicked, banks }) => {
     return (
         <div>
-            <ListGroup >
+            <ListGroup>
                 {banks.map((bank) => (
                     <ListGroup.Item variant="dark" action onClick={() => onBankClicked(bank)}>
                         {bank.bankName}
