@@ -1,19 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 
 const AccountModal = ({ banks, show, setShow, account, setAccount, saveAccount }) => {
-    const [dataError, setDataError] = useState(false);
+    const [dataError, setDataError] = useState("");
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setDataError("");
+        setShow(false);
+    }
 
     const saveChanges = () => {
-        if (account.accountNumber !== "" && account.ownerName !== "" && account.ownerSurname !== "" && account.bank) {
+        if (checkIfDataCorrect()) {
             saveAccount();
             handleClose();
-            setDataError(false);
-        } else {
-            setDataError(true);
         }
+    }
+
+    const checkIfDataCorrect = () => {
+        const regex = /^[0-9\b]+$/;
+        if (account.accountNumber === "" || account.ownerName === "" || account.ownerSurname === "" || !account.bank) {
+            setDataError("Enter all values!");
+            return false;
+        } else if (!regex.test(account.accountNumber)) {
+            setDataError("Incorrect account number!");            
+            return false;
+        }
+        setDataError("");
+        return true;
     }
 
     return (
@@ -52,12 +65,18 @@ const AccountModal = ({ banks, show, setShow, account, setAccount, saveAccount }
                         ))}
                     </Form.Control>
                 </Form.Group>
+                {
+                    dataError !== "" ? (
+                        <div className="data-error">
+                            {dataError}
+                        </div>) : (<div></div>)
+                }
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant={dataError ? "danger" : "primary"} onClick={saveChanges}>
+                <Button variant="primary" onClick={saveChanges}>
                     Save Changes
                 </Button>
             </Modal.Footer>

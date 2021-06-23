@@ -19,6 +19,7 @@ const NavigationBar = ({ user, logoutUser }) => {
             <Link to={"/"} className="navbar-brand">
                 <AiFillBank size="32px" />
             </Link>
+            {user ? (<Navbar.Brand className="navbar-user">Signed in as: <span>{user.username}</span></Navbar.Brand>) : (<Nav></Nav>)}
             {
                 user ? (
                     <Nav className="ml-auto">

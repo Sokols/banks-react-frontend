@@ -3,6 +3,7 @@ import './HomeScreen.css';
 
 import { connect } from 'react-redux';
 import { Container, Col, Row, Button } from 'react-bootstrap';
+import { Scrollbars } from 'react-custom-scrollbars-2';
 
 import { getAllBanks } from '../../redux/actions/bankActions';
 import { getAccountsByUserAndBankId, addAccount, editAccount, removeAccountById } from '../../redux/actions/accountActions';
@@ -32,19 +33,44 @@ const HomeScreen = ({ user, authToken, getAllBanks, getAccountsByUserAndBankId, 
                 .then(banks => {
                     setBanks(banks)
                     setAccount({ ...account, userId: user.id, bank: banks[0] })
-                    updateAccounts(banks[0])
+                    handleUpdatingAccounts(banks[0])
                 })
-                .catch(error => console.log(error))
+                .catch(error => console.log("Error on setting banks: " + error.response.data.details));
         }
     }, [])
 
-    const saveAccount = () => {
+    const handleSavingAccount = () => {
         addAccount(authToken, account)
             .then(() => {
-                updateAccounts(account.bank);
+                handleUpdatingAccounts(account.bank);
                 setAccount({ ...account, accountNumber: "", ownerName: "", ownerSurname: "", bank: { bankName: "" } });
             })
-            .catch(error => console.log("Error on adding user: " + error))
+            .catch(error => console.log("Error on saving account: " + error.response.data.details));
+    }
+
+    const handleEditingAccount = (account) => {
+        editAccount(authToken, account).then(() => {
+            handleUpdatingAccounts(account.bank);
+        })
+        .catch(error => console.log("Error on editing account: " + error.response.data.details));
+    }
+
+    const handleRemovingAccount = (account) => {
+        removeAccountById(authToken, account.id).then(() => {
+            handleUpdatingAccounts(account.bank);
+        })
+        .catch(error => console.log("Error on removing account: " + error.response.data.details));
+    }
+
+    const handleUpdatingAccounts = (bank) => {
+        if (bank && user) {
+            getAccountsByUserAndBankId(authToken, user, bank.id)
+                .then(accounts => {
+                    setAccounts(accounts)
+                })
+                .catch(error => console.log("Error on updating accounts: " + error.response.data.details))
+            setCurrentBank(bank);
+        }
     }
 
     const handleAddAccountButton = (account) => {
@@ -52,30 +78,21 @@ const HomeScreen = ({ user, authToken, getAllBanks, getAccountsByUserAndBankId, 
         setShow(true);
     }
 
-    const updateAccounts = (bank) => {
-        if (bank && user) {
-            getAccountsByUserAndBankId(authToken, user, bank.id)
-                .then(accounts => {
-                    setAccounts(accounts)
-                })
-                .catch(error => console.log(error))
-            setCurrentBank(bank);
-        }
-    }
-
     return (
         <div className="Screen">
             {user ? (
                 <div>
-                    <AccountModal banks={banks} show={show} setShow={setShow} account={account} setAccount={setAccount} saveAccount={saveAccount} />
+                    <AccountModal banks={banks} show={show} setShow={setShow} account={account} setAccount={setAccount} saveAccount={handleSavingAccount} />
                     <Container className="screenContainer">
                         <Row>
                             <Col className="listContainer">
                                 <Row>
                                     <BankInfo bank={currentBank} />
                                 </Row>
-                                <Row className="bankList">
-                                    <BanksList banks={banks} onBankClicked={(bank) => updateAccounts(bank)} />
+                                <Row>
+                                    <Scrollbars style={{ height: 350 }}>
+                                        <BanksList banks={banks} onBankClicked={(bank) => handleUpdatingAccounts(bank)} />
+                                    </Scrollbars>
                                 </Row>
                             </Col>
                             <Col className="tableContainer">
@@ -83,21 +100,13 @@ const HomeScreen = ({ user, authToken, getAllBanks, getAccountsByUserAndBankId, 
                                     user={user}
                                     banks={banks}
                                     accounts={accounts}
-                                    editAccount={(account) => {
-                                        editAccount(authToken, account).then(() => {
-                                            updateAccounts(account.bank);
-                                        })
-                                    }}
-                                    removeAccount={(account) => {
-                                        removeAccountById(authToken, account.id).then(() => {
-                                            updateAccounts(account.bank);
-                                        })
-                                    }}
+                                    editAccount={(account) => { handleEditingAccount(account) }}
+                                    removeAccount={(account) => { handleRemovingAccount(account) }}
                                 />
                                 <Button
                                     className="rowButton"
-                                    variant="primary"
-                                    onClick={() => handleAddAccountButton(account)}>Add account</Button>
+                                    variant="success"
+                                    onClick={() => handleAddAccountButton(account)}>Add new account</Button>
                             </Col>
                         </Row>
                     </Container>
